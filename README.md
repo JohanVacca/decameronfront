@@ -11,7 +11,7 @@ Este proyecto es una aplicación de gestión hotelera construida con [Create Rea
 
 Para comenzar con el proyecto, sigue estos pasos:
 
-1. **Clone the repository:**
+1. **Clonar el repositorio:**
 ``bash
    git clone https://github.com/your-username/hotel-management.git
    cd hotel-management
