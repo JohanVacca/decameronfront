@@ -213,7 +213,7 @@ const HotelForm = () => {
           </div>
 
           <button type="button" onClick={addRoom} className="btn-secondary">
-            Agregar Habitación
+            Agregar Habitaciones
           </button>
         </div>
 
