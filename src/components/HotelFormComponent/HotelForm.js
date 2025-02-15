@@ -27,6 +27,7 @@ const HotelForm = () => {
     tipoAcomodacionCodigo: allowedAccommodations[state.type_of_rooms[0]?.codigo || "1"][0],
   });
   const [validationError, setValidationError] = useState("");
+  const [roomError, setRoomError] = useState("");
 
   useEffect(() => {
     fetchParametrics();
@@ -52,14 +53,21 @@ const HotelForm = () => {
 
   const handleRoomChange = (e) => {
     const { name, value } = e.target;
-    setCurrentRoom((prev) => ({
-      ...prev,
-      [name]: value,
-      tipoAcomodacionCodigo: name === "tipoHabitacionCodigo" ? allowedAccommodations[value][0] : prev.tipoAcomodacionCodigo,
-    }));
+    setCurrentRoom((prev) => {
+      const newRoom = { ...prev, [name]: value };
+      if (name === "tipoHabitacionCodigo") {
+        newRoom.tipoAcomodacionCodigo = allowedAccommodations[value][0];
+      }
+      return newRoom;
+    });
   };
 
   const addRoom = useCallback(() => {
+    if (currentRoom.cantidad <= 0) {
+      setRoomError("La cantidad debe ser mayor a 0");
+      return;
+    }
+
     setHotelData((prev) => ({
       ...prev,
       habitaciones: [...prev.habitaciones, currentRoom],
@@ -70,6 +78,7 @@ const HotelForm = () => {
       tipoHabitacionCodigo: state.type_of_rooms[0]?.codigo || "1",
       tipoAcomodacionCodigo: allowedAccommodations[state.type_of_rooms[0]?.codigo || "1"][0],
     });
+    setRoomError(""); // Clear the room error after adding a valid room
   }, [currentRoom, state.type_of_rooms]);
 
   const handleSubmit = useCallback(
@@ -212,8 +221,10 @@ const HotelForm = () => {
             </select>
           </div>
 
+          {roomError && <div className="validation-error">{roomError}</div>}
+
           <button type="button" onClick={addRoom} className="btn-secondary">
-            Agregar Habitaciones
+            Agregar Habitación
           </button>
         </div>
 
